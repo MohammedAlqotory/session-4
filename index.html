@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Camp - المرجع الهندسي الشامل (Sessions 1 to 4)</title>
+    <style>
+        :root {
+            --bg-color: #0b1120;
+            --card-bg: #111c33;
+            --card-border: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-cyan: #38bdf8;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --accent-purple: #c084fc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #111c33, #0f172a);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 30px;
+        }
+        header h1 {
+            color: var(--accent-cyan);
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            margin: 40px 0 20px 0;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 10px;
+        }
+        /* نظام المربعات المزدوجة (فهرس الشرح بجانب المثال الواقعي) */
+        .grid-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid-row { grid-template-columns: 1fr; }
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+        .card-title.example {
+            color: var(--accent-orange);
+        }
+        .sub-box {
+            background-color: #090e1a;
+            border: 1px solid #1a233a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+        ul { padding-right: 20px; color: var(--text-muted); }
+        li { margin-bottom: 6px; }
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Network Engineering Master Hub</h1>
+            <p>المرجع الهندسي التفاعلي الشامل لربط السكاشن الأربعة (من أساسيات الشبكات وحتى الـ Switching والـ VLANs)</p>
+        </header>
+
+        <!-- ================= السيشن الأولى والثانية ================= -->
+        <div class="section-title">🌐 أولاً: السيشن 1 & 2 (أساسيات الشبكات ونموذج OSI والـ IP)</div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
+                <p>• <b>تعريف الشبكة:</b> ربط الأجهزة بهدف المشاركة[cite: 1].</p>
+                <p>• <b>نموذج OSI (7 Layers):</b> هيكل تنظيمي لتقسيم مهام الاتصال من التطبيقات وحتى الكابلات الفيزيائية.</p>
+                <p>• <b>عنونة IPv4 & Subnetting:</b> استخدام عناوين منطقية لتوجيه البيانات عبر الـ IP مع تقسيم الشبكات عبر الـ Subnet Mask.</p>
+            </div>
+            <div class="card">
+                <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
+                <div class="sub-box">
+                    <p><b>شبكة منزلية أو مكتبية (LAN):</b> عندما تربط حاسوبك بطابعة عبر راوتر منزلي، يقوم الراوتر بمنحك عنوان IP محلي لتتواصل الأجهزة داخل نفس النطاق، بينما يتم ربط الفروع البعيدة عبر شبكات واسعة (WAN) مثل الإنترنت.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= السيشن الثالثة ================= -->
+        <div class="section-title">🚀 ثانياً: السيشن 3 (طبقة النقل، TCP/UDP، والـ Sockets)</div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
+                <p>• <b>القاعدة الذهبية:</b> <i>"IP finds the host. Layer 4 finds the application."</i></p>
+                <p>• <b>TCP vs UDP:</b> الأول موثوق وبطيء نسبياً مع ترويسة متغيرة (20-60 بايت) ويستخدم 3-Way Handshake؛ والثاني سريع وخفيف بثابت (8 بايت).</p>
+                <p>• <b>الـ Sockets والبورتات:</b> اتحاد الآي بي مع البورت لتحديد عنوان الاتصال الكامل. أمثلة البورتات مثل 80 للويب غير الآمن، 443 للويب الآمن، و 53 للـ DNS.</p>
+            </div>
+            <div class="card">
+                <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
+                <div class="sub-box">
+                    <p><b>تصفح موقع بنكي:</b> يتم فتح اتصال آمن عبر بروتوكول <b>TCP</b> وبورت <b>443</b> لضمان عدم ضياع أي بايت، وتكوين سوكت كامل مثل:</p>
+                    <p><code>192.168.1.10:49153 -> 142.250.190.46:443</code></p>
+                    <p>بينما عند بث فيديو مباشر (Live Stream)، يُفضل استخدام <b>UDP</b> لتجنب التقطيع (Buffering).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= السيشن الرابعة ================= -->
+        <div class="section-title">⚙️ ثالثاً: السيشن 4 (Switching, VLANs, Access/Trunk, & STP)</div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
+                <p>• <b>آلية السويتش:</b> يعمل في Layer 2 مع الإطارات (Frames)[cite: 12] ويبني جدول <b>MAC Address Table</b> بالتعلم (Learning) والتوجيه (Forwarding) بمدة احتفاظ 300 ثانية (Aging Time).</p>
+                <p>• <b>الـ VLANs:</b> تقسيم السويتش برمجياً لشبكات افتراضية معزولة لتصغير نطاق البث وزيادة الأمان.</p>
+                <p>• <b>Access vs Trunk:</b> بورت الـ Access ينقل فيلان واحدة للأجهزة الطرفية (Untagged)[cite: 18]؛ بينما بورت الـ Trunk ينقل عدة فيلانز بين السويتشات باستخدام التغليف 802.1Q (Tagged)[cite: 18].</p>
+                <p>• <b>بروتوكول STP:</b> لمنع عواصف البث والحلقات الشبكية عبر غلق المسارات المكررة مؤقتاً[cite: 21].</p>
+            </div>
+            <div class="card">
+                <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
+                <div class="sub-box">
+                    <p><b>شركة متعددة الأقسام (IT و HR):</b></p>
+                    <ul>
+                        <li>تم ربط أجهزة قسم الـ IT ببورتات <b>Access Port</b> تابعة لـ VLAN 10.</li>
+                        <li>تم ربط السويتش الرئيسي بالسويتش الفرعي عبر كابل <b>Trunk Port</b> يحمل بيانات الفيلانز معا بتغليف 802.1Q[cite: 18].</li>
+                        <li>وجود كابل احتياطي بين السويتشات لا يسبب مشاكل بفضل حماية بروتوكول <b>STP</b> الذي يبقيه في وضع الاستعداد[cite: 21].</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= السيناريو الشامل لربط السكاشن الأربعة ================= -->
+        <div class="section-title">🎬 رابعاً: السيناريو الشامل (رحلة البيانات المتكاملة عبر السكاشن الأربعة)</div>
+        <div class="card" style="border-color: var(--accent-purple);">
+            <div class="card-title" style="color: var(--accent-purple);">قصة رحلة البيانات من جهازك وحتى سيرفر الإنترنت</div>
+            <p>تخيل أنك جالس في مكتبك وتريد فتح موقع ويب آمن، لتتداخل السكاشن الأربعة معاً في أجزاء من الثانية:</p>
+            <div class="sub-box">
+                <p><b>1. التجهيز وتحديد الشبكة (السيشن 1 & 2):</b> يتم تهيئة البيانات وتوليد عناوين الـ IP المناسبة لمسار الخروج.</p>
+                <p><b>2. النقل والموثوقية (السيشن 3 - Layer 4):</b> يتم استخدام بروتوكول <b>TCP</b> وإجراء المصافحة الثلاثية (3-Way Handshake)، وتحديد البورت 443 وإنشاء الـ <b>Socket</b> الكامل.</p>
+                <p><b>3. التبديل والفلترة والفيلانات (السيشن 4 - Layer 2):</b> تغلف البيانات في <b>Frames</b>[cite: 12] وتمر عبر بورت <b>Access</b> الخاص بفيلان الموظفين، ثم تسافر عبر كابل <b>Trunk</b> بين السويتشات[cite: 18] محمية بـ <b>STP</b>[cite: 21]، لتسافر أخيرًا عبر الإنترنت وتصل للوجهة بنجاح!</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Created by Gemini for Engineering Study Revision | Ultimate Network Hub</p>
+        </footer>
+    </div>
+</body>
+</html>
