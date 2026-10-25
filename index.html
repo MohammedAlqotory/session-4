@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Camp - المرجع الهندسي الشامل (Sessions 1 to 4)</title>
+    <title>Network Camp - المرجع الهندسي الشامل لمهندسي الشبكات</title>
     <style>
         :root {
             --bg-color: #0b1120;
@@ -86,7 +86,8 @@
             margin-top: 12px;
         }
         ul { padding-right: 20px; color: var(--text-muted); }
-        li { margin-bottom: 6px; }
+        li { margin-bottom: 8px; }
+        code { background-color: #0369a1; color: #fff; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
         footer {
             text-align: center;
             padding: 30px;
@@ -102,82 +103,103 @@
     <div class="container">
         <header>
             <h1>Network Engineering Master Hub</h1>
-            <p>المرجع الهندسي التفاعلي الشامل لربط السكاشن الأربعة (من أساسيات الشبكات وحتى الـ Switching والـ VLANs)</p>
+            <p>المرجع الهندسي الشامل والموسع لمهندسي الشبكات (تغطية مفصلة للسيشن الرابعة والمفاهيم التأسيسية)</p>
         </header>
 
-        <!-- ================= السيشن الأولى والثانية ================= -->
-        <div class="section-title">🌐 أولاً: السيشن 1 & 2 (أساسيات الشبكات ونموذج OSI والـ IP)</div>
+        <!-- ================= المحور الأول: آلية عمل السويتش ================= -->
+        <div class="section-title">⚙️ أولاً: آلية عمل السويتش وتوجيه الإطارات (Layer 2 Switching)</div>
         <div class="grid-row">
             <div class="card">
                 <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
-                <p>• <b>تعريف الشبكة:</b> ربط الأجهزة بهدف المشاركة[cite: 1].</p>
-                <p>• <b>نموذج OSI (7 Layers):</b> هيكل تنظيمي لتقسيم مهام الاتصال من التطبيقات وحتى الكابلات الفيزيائية.</p>
-                <p>• <b>عنونة IPv4 & Subnetting:</b> استخدام عناوين منطقية لتوجيه البيانات عبر الـ IP مع تقسيم الشبكات عبر الـ Subnet Mask.</p>
+                <p>• يعمل السويتش في <b>طبقة ربط البيانات (Data Link Layer - Layer 2)</b> ويتعامل مع البيانات في شكل إطارات (Frames) تحتوي على Header و Data و Trailer[cite: 10].</p>
+                <p>• <b>طرق إعادة التوجيه (Forwarding Methods):</b></p>
+                <ul>
+                    <li><b>Store & Forward:</b> يستلم الإطار بالكامل ويفحصه للتأكد من خلوه من الأخطاء قبل إرساله (أكثر أماناً ودقة).</li>
+                    <li><b>Cut-Through:</b> يقرأ عنوان الوجهة (Destination MAC) فقط ويبدأ في توجيه الإطار فوراً (سرعة فائقة).</li>
+                </ul>
             </div>
             <div class="card">
                 <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
                 <div class="sub-box">
-                    <p><b>شبكة منزلية أو مكتبية (LAN):</b> عندما تربط حاسوبك بطابعة عبر راوتر منزلي، يقوم الراوتر بمنحك عنوان IP محلي لتتواصل الأجهزة داخل نفس النطاق، بينما يتم ربط الفروع البعيدة عبر شبكات واسعة (WAN) مثل الإنترنت.</p>
+                    <p><b>غرفة التحكم في مصنع:</b> عند نقل ملفات فيديو مراقبة حساسة، يُستخدم نظام <b>Store & Forward</b> لضمان عدم وصول أي بايت تالف. أما في ألعاب الشبكات الداخلية التي تتطلب سرعة استجابة لحظية، فيتم الاعتماد على سرعة <b>Cut-Through</b>.</p>
                 </div>
             </div>
         </div>
 
-        <!-- ================= السيشن الثالثة ================= -->
-        <div class="section-title">🚀 ثانياً: السيشن 3 (طبقة النقل، TCP/UDP، والـ Sockets)</div>
+        <!-- ================= المحور الثاني: جدول الـ MAC والتعلم ================= -->
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-title">🧠 جدول الـ MAC Address Table وآلية التعلم والفلترة</div>
+            <p>يمتلك السويتش جدولاً ذكياً لتسجيل عناوين الأجهزة[cite: 11]:</p>
+            <ul>
+                <li><b>التعلم (Learning):</b> عندما يرسل جهاز إطاراً، يلتقט السويتش عنوان الـ MAC الخاص بالمرسل (Source MAC) ويربطه برقم البورت القادم منه في الجدول[cite: 11].</li>
+                <li><b>البث عند الجهالة (Flooding):</b> لو كان عنوان الوجهة غير معروف في الجدول، يضطر السويتش لإرسال الإطار من جميع البورتات ما عدا بورت الدخول[cite: 11].</li>
+                <li><b>عمر الجدول (Aging Time):</b> القيمة الافتراضية هي <b>300 ثانية (5 دقائق)</b>، وإذا توقف الجهاز عن إرسال البيانات خلالها، يُحذف الـ MAC تلقائياً لتنظيف الذاكرة[cite: 11].</li>
+            </ul>
+        </div>
+
+        <!-- ================= المحور الثالث: شبكات الـ VLANs وتصنيفاتها ================= -->
+        <div class="section-title">🌐 ثانياً: شبكات الـ VLANs (Virtual Local Area Networks) وأنواعها</div>
         <div class="grid-row">
             <div class="card">
                 <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
-                <p>• <b>القاعدة الذهبية:</b> <i>"IP finds the host. Layer 4 finds the application."</i></p>
-                <p>• <b>TCP vs UDP:</b> الأول موثوق وبطيء نسبياً مع ترويسة متغيرة (20-60 بايت) ويستخدم 3-Way Handshake؛ والثاني سريع وخفيف بثابت (8 بايت).</p>
-                <p>• <b>الـ Sockets والبورتات:</b> اتحاد الآي بي مع البورت لتحديد عنوان الاتصال الكامل. أمثلة البورتات مثل 80 للويب غير الآمن، 443 للويب الآمن، و 53 للـ DNS.</p>
+                <p>• تقسيم السويتش الفيزيائي الواحد برمجياً لعدة شبكات معزولة لتصغير نطاق البث (Broadcast Domains) وزيادة الأمان[cite: 13, 14, 15].</p>
+                <p>• <b>أنواع الـ VLANs الرئيسية:</b></p>
+                <ul>
+                    <li><b>Default VLAN (VLAN 1):</b> الفيلان الافتراضية الأساسية ولا يمكن حذفها أو تغيير اسمها[cite: 16].</li>
+                    <li><b>Data VLAN:</b> مخصصة لبيانات المستخدمين وتصفح الويب[cite: 16].</li>
+                    <li><b>Management VLAN:</b> مخصصة لإدارة السويتشات عن بعد عبر SSH/Telnet مع فصلها أمنياً[cite: 16].</li>
+                    <li><b>Voice VLAN:</b> مخصصة للهواتف الصوتية (IP Phones) وتتطلب أولوية قصوى وضمان تأخير أقل من 150 مللي ثانية عبر الـ QoS[cite: 16].</li>
+                </ul>
             </div>
             <div class="card">
                 <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
                 <div class="sub-box">
-                    <p><b>تصفح موقع بنكي:</b> يتم فتح اتصال آمن عبر بروتوكول <b>TCP</b> وبورت <b>443</b> لضمان عدم ضياع أي بايت، وتكوين سوكت كامل مثل:</p>
-                    <p><code>192.168.1.10:49153 -> 142.250.190.46:443</code></p>
-                    <p>بينما عند بث فيديو مباشر (Live Stream)، يُفضل استخدام <b>UDP</b> لتجنب التقطيع (Buffering).</p>
+                    <p><b>شركة متعددة الأقسام:</b> بدلاً من شراء سويتش منفصل لكل قسم، يتم إنشاء <code>VLAN 10</code> للموظفين، و <code>VLAN 20</code> للإدارة المالية، و <code>VLAN 30</code> للهواتف الصوتية. هذا يعزل حركة المرور تماماً ويمنع أي قسم من التجسس على بيانات القسم الآخر.</p>
                 </div>
             </div>
         </div>
 
-        <!-- ================= السيشن الرابعة ================= -->
-        <div class="section-title">⚙️ ثالثاً: السيشن 4 (Switching, VLANs, Access/Trunk, & STP)</div>
+        <!-- ================= المحور الرابع: بورتات Access و Trunk وأوامر التكوين ================= -->
+        <div class="section-title">🔌 ثالثاً: بورتات الـ Access والـ Trunk وأوامر السيسكو (CLI)</div>
         <div class="grid-row">
             <div class="card">
                 <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
-                <p>• <b>آلية السويتش:</b> يعمل في Layer 2 مع الإطارات (Frames)[cite: 12] ويبني جدول <b>MAC Address Table</b> بالتعلم (Learning) والتوجيه (Forwarding) بمدة احتفاظ 300 ثانية (Aging Time).</p>
-                <p>• <b>الـ VLANs:</b> تقسيم السويتش برمجياً لشبكات افتراضية معزولة لتصغير نطاق البث وزيادة الأمان.</p>
-                <p>• <b>Access vs Trunk:</b> بورت الـ Access ينقل فيلان واحدة للأجهزة الطرفية (Untagged)[cite: 18]؛ بينما بورت الـ Trunk ينقل عدة فيلانز بين السويتشات باستخدام التغليف 802.1Q (Tagged)[cite: 18].</p>
-                <p>• <b>بروتوكول STP:</b> لمنع عواصف البث والحلقات الشبكية عبر غلق المسارات المكررة مؤقتاً[cite: 21].</p>
+                <p>• <b>Access Port:</b> ينقل بيانات لفيلان واحدة فقط، مخصص للأجهزة الطرفية (كمبيوتر، طابعة)، والإطارات تكون <code>Untagged</code>[cite: 17].</p>
+                <p>• <b>Trunk Port:</b> ينقل عدة فيلانز معاً بين السويتشات أو الراوترات باستخدام التغليف <code>802.1Q Tagged</code>[cite: 17].</p>
+                <p>• <b>أوامر التكوين الشهيرة:</b></p>
+                <div class="sub-box" style="margin-top: 5px;">
+                    <code>Switch(config)# vlan 10</code><br>
+                    <code>Switch(config-vlan)# name IT_DEPT</code><br>
+                    <code>Switch(config-if)# switchport mode access</code><br>
+                    <code>Switch(config-if)# switchport access vlan 10</code>
+                </div>
             </div>
             <div class="card">
                 <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
                 <div class="sub-box">
-                    <p><b>شركة متعددة الأقسام (IT و HR):</b></p>
-                    <ul>
-                        <li>تم ربط أجهزة قسم الـ IT ببورتات <b>Access Port</b> تابعة لـ VLAN 10.</li>
-                        <li>تم ربط السويتش الرئيسي بالسويتش الفرعي عبر كابل <b>Trunk Port</b> يحمل بيانات الفيلانز معا بتغليف 802.1Q[cite: 18].</li>
-                        <li>وجود كابل احتياطي بين السويتشات لا يسبب مشاكل بفضل حماية بروتوكول <b>STP</b> الذي يبقيه في وضع الاستعداد[cite: 21].</li>
-                    </ul>
+                    <p><b>الربط بين مبنيين:</b> أجهزة الموظفين في الطابق الأرضي متصلة ببورتات تعمل بوضع <b>Access</b>. ولنقل بيانات كل الفيلانات من سويتش الطابق الأرضي إلى سويتش الطابق العلوي عبر كابل واحد، يتم تكوين البورت الرابط بينهما بوضع <b>Trunk</b> مع تفعيل وسم <code>802.1Q</code> لتمييز الفيلانات أثناء عبورها[cite: 17].</p>
                 </div>
             </div>
         </div>
 
-        <!-- ================= السيناريو الشامل لربط السكاشن الأربعة ================= -->
-        <div class="section-title">🎬 رابعاً: السيناريو الشامل (رحلة البيانات المتكاملة عبر السكاشن الأربعة)</div>
-        <div class="card" style="border-color: var(--accent-purple);">
-            <div class="card-title" style="color: var(--accent-purple);">قصة رحلة البيانات من جهازك وحتى سيرفر الإنترنت</div>
-            <p>تخيل أنك جالس في مكتبك وتريد فتح موقع ويب آمن، لتتداخل السكاشن الأربعة معاً في أجزاء من الثانية:</p>
-            <div class="sub-box">
-                <p><b>1. التجهيز وتحديد الشبكة (السيشن 1 & 2):</b> يتم تهيئة البيانات وتوليد عناوين الـ IP المناسبة لمسار الخروج.</p>
-                <p><b>2. النقل والموثوقية (السيشن 3 - Layer 4):</b> يتم استخدام بروتوكول <b>TCP</b> وإجراء المصافحة الثلاثية (3-Way Handshake)، وتحديد البورت 443 وإنشاء الـ <b>Socket</b> الكامل.</p>
-                <p><b>3. التبديل والفلترة والفيلانات (السيشن 4 - Layer 2):</b> تغلف البيانات في <b>Frames</b>[cite: 12] وتمر عبر بورت <b>Access</b> الخاص بفيلان الموظفين، ثم تسافر عبر كابل <b>Trunk</b> بين السويتشات[cite: 18] محمية بـ <b>STP</b>[cite: 21]، لتسافر أخيرًا عبر الإنترنت وتصل للوجهة بنجاح!</p>
+        <!-- ================= المحور الخامس: الـ Inter-VLAN Routing وبروتوكول STP ================= -->
+        <div class="section-title">🛡️ رابعاً: التوجيه بين الفيلانات (Inter-VLAN Routing) وحماية STP</div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-title">📖 الشرح والمفاهيم الأساسية</div>
+                <p>• <b>Inter-VLAN Routing:</b> بما أن الفيلانات معزولة أمنياً، يتم استخدام سويتش طبقة ثالثة (Multilayer Switch) وإنشاء واجهات افتراضية <b>SVI</b> لتقوم بدور البوابة الافتراضية والسماح بالتوجيه[cite: 19].</p>
+                <p>• <b>بروتوكول STP (Spanning Tree Protocol):</b> بروتوكول يحمي الشبكة من الحلقات المغلقة (Loops) وعواصف البث (Broadcast Storms) عن طريق إغلاق المسارات الزائدة مؤقتاً لحين الحاجة إليها.</p>
+            </div>
+            <div class="card">
+                <div class="card-title example">💡 مثال واقعي وتطبيقي</div>
+                <div class="sub-box">
+                    <p><b>شبكة مؤمنة واحتياطية:</b> تم توصيل سويتشين بكابلين لضمان عدم توقف العمل عند انقطاع كابل. لولا وجود بروتوكول <b>STP</b>، لدخلت البيانات في حلقة لا نهائية وأسقطت الشبكة بالكامل. يقوم الستب بابقاء الكابل الثاني في وضع الاحتياطي (Blocking) وتفعيله فورياً عند قطع الكابل الأساسي.</p>
+                </div>
             </div>
         </div>
 
         <footer>
-            <p>Created by Gemini for Engineering Study Revision | Ultimate Network Hub</p>
+            <p>Created by Gemini & The Master Engineer | Ultimate Network Engineering Reference</p>
         </footer>
     </div>
 </body>
